@@ -55,9 +55,9 @@ const StudentScannerScreen = ({ navigation }) => {
                 return;
             }
 
-            const busId = qrData.bus_id;
-            if (!busId) {
-                Alert.alert("Error", "Invalid QR Code: Missing Bus ID.");
+            const qrToken = qrData.qr_token;
+            if (!qrToken) {
+                Alert.alert("Error", "Invalid QR Code: Missing Token.");
                 setLoading(false);
                 return;
             }
@@ -65,7 +65,7 @@ const StudentScannerScreen = ({ navigation }) => {
             // Call Backend
             const token = await getToken();
             const response = await axios.post(`${API_URL}/dashboard/student/board/`, {
-                bus_id: busId,
+                qr_token: qrToken,
                 latitude: latitude,
                 longitude: longitude
             }, {

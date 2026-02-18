@@ -8,6 +8,8 @@ import ManageMembersScreen from '../screens/management/ManageMembersScreen';
 import EditMemberScreen from '../screens/management/EditMemberScreen';
 import AddBusScreen from '../screens/management/AddBusScreen';
 import EditBusScreen from '../screens/management/EditBusScreen';
+import ScheduleSettingsScreen from '../screens/management/ScheduleSettingsScreen';
+import ManagementComplaintsScreen from '../screens/management/ManagementComplaintsScreen';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTheme } from '../context/ThemeContext';
 
@@ -34,6 +36,8 @@ const ManagementTabs = ({ user, onLogout }) => {
                             iconName = focused ? 'people' : 'people-outline';
                         } else if (route.name === 'Add Bus') {
                             iconName = focused ? 'add-circle' : 'add-circle-outline';
+                        } else if (route.name === 'Complaints') {
+                            iconName = focused ? 'chatbubbles' : 'chatbubbles-outline';
                         }
 
                         return <Ionicons name={iconName} size={24} color={color} />;
@@ -72,6 +76,7 @@ const ManagementTabs = ({ user, onLogout }) => {
                 <Tab.Screen name="Overview">
                     {props => <ManagementDashboard {...props} user={user} onLogout={onLogout} />}
                 </Tab.Screen>
+                <Tab.Screen name="Complaints" component={ManagementComplaintsScreen} />
                 <Tab.Screen name="Add Member" component={AddMemberScreen} />
                 <Tab.Screen name="Manage Members" component={ManageMembersScreen} />
                 <Tab.Screen name="Add Bus" component={AddBusScreen} />
@@ -102,6 +107,20 @@ const ManagementNavigator = ({ user, onLogout }) => {
                 options={{
                     headerShown: false,
                     presentation: 'modal'
+                }}
+            />
+            <Stack.Screen
+                name="ScheduleSettings"
+                component={ScheduleSettingsScreen}
+                options={{
+                    headerShown: false
+                }}
+            />
+            <Stack.Screen
+                name="ManagementComplaints"
+                component={ManagementComplaintsScreen}
+                options={{
+                    headerShown: false
                 }}
             />
         </Stack.Navigator>

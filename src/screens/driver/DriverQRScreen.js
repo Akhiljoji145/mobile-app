@@ -10,10 +10,25 @@ const DriverQRScreen = () => {
     const { theme, isDarkMode } = useTheme();
     const [busId, setBusId] = useState(null);
     const [busNumber, setBusNumber] = useState('');
+    const [qrToken, setQrToken] = useState(null);
+    const [timeLeft, setTimeLeft] = useState(30);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         fetchBusDetails();
+
+        // Refresh QR Token every 30 seconds
+        const intervalId = setInterval(fetchBusDetails, 30000);
+
+        // Countdown timer for visual feedback
+        const timerId = setInterval(() => {
+            setTimeLeft((prev) => (prev > 0 ? prev - 1 : 30));
+        }, 1000);
+
+        return () => {
+            clearInterval(intervalId);
+            clearInterval(timerId);
+        };
     }, []);
 
     const fetchBusDetails = async () => {
@@ -40,10 +55,14 @@ const DriverQRScreen = () => {
                 setBusNumber(response.data.bus.number);
                 setBusId(response.data.bus.id);
             }
+            if (response.data.qr_token) {
+                setQrToken(response.data.qr_token);
+            }
         } catch (error) {
             console.log('Error fetching bus info:', error);
         } finally {
             setLoading(false);
+            setTimeLeft(30); // Reset timer on successful fetch attempt
         }
     };
 
@@ -72,15 +91,28 @@ const DriverQRScreen = () => {
             <Text style={[styles.subtitle, { color: theme.subtext }]}>Bus {busNumber}</Text>
 
             <View style={styles.qrContainer}>
-                {/* Encoding the Bus ID. Since I don't have it in the view yet, let me fix the view first. */}
-                {/* Wait, if I use the bus number, the student API needs to lookup by number. Method by ID is safer. */}
-                {/* I will assume I have the ID. */}
+                {/* Dynamic QR Token */}
                 <QRCode
-                    value={JSON.stringify({ bus_id: busId || 999 })} // 999 is placeholder
+                    value={JSON.stringify({ qr_token: qrToken })}
                     size={250}
                     color={isDarkMode ? "white" : "black"}
                     backgroundColor={theme.card}
                 />
+            </View>
+
+            <View style={styles.timerContainer}>
+                <Text style={{ color: theme.subtext, marginBottom: 5 }}>Refreshing in {timeLeft}s</Text>
+                <View style={[styles.progressBarBackground, { backgroundColor: theme.card }]}>
+                    <View
+                        style={[
+                            styles.progressBarFill,
+                            {
+                                width: `${(timeLeft / 30) * 100}%`,
+                                backgroundColor: timeLeft < 5 ? '#e74c3c' : '#3498db'
+                            }
+                        ]}
+                    />
+                </View>
             </View>
 
             <Text style={[styles.instruction, { color: theme.subtext }]}>
@@ -121,6 +153,22 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontSize: 14,
         paddingHorizontal: 20,
+    },
+    timerContainer: {
+        width: '80%',
+        marginBottom: 30,
+        alignItems: 'center',
+    },
+    progressBarBackground: {
+        height: 6,
+        width: '100%',
+        borderRadius: 3,
+        overflow: 'hidden',
+        backgroundColor: '#e0e0e0', // Fallback
+    },
+    progressBarFill: {
+        height: '100%',
+        borderRadius: 3,
     }
 });
 

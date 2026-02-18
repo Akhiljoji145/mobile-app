@@ -172,6 +172,20 @@ const ManagementDashboard = ({ user, onLogout }) => {
                             </View>
                         </View>
 
+                        <TouchableOpacity
+                            style={[styles.settingsButton, { backgroundColor: theme.card }]}
+                            onPress={() => navigation.navigate('ScheduleSettings')}
+                        >
+                            <View style={styles.settingsIconContainer}>
+                                <Ionicons name="time" size={24} color="#0984e3" />
+                            </View>
+                            <View style={styles.settingsTextContainer}>
+                                <Text style={[styles.settingsTitle, { color: theme.text }]}>Trip Schedule Settings</Text>
+                                <Text style={[styles.settingsSubtitle, { color: theme.subtext }]}>Configure Morning/Evening trip timings</Text>
+                            </View>
+                            <Ionicons name="chevron-forward" size={24} color={theme.subtext} />
+                        </TouchableOpacity>
+
                         <Text style={[styles.sectionTitle, { color: theme.text }]}>Managed Buses</Text>
 
                         {buses.length === 0 ? (
@@ -428,6 +442,38 @@ const styles = StyleSheet.create({
     emptyStateText: {
         marginTop: 10,
         fontSize: 16,
+    },
+    settingsButton: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        padding: 15,
+        borderRadius: 20,
+        marginBottom: 20,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.05,
+        shadowRadius: 5,
+        elevation: 3,
+    },
+    settingsIconContainer: {
+        width: 50,
+        height: 50,
+        borderRadius: 15,
+        backgroundColor: 'rgba(9, 132, 227, 0.1)',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight: 15,
+    },
+    settingsTextContainer: {
+        flex: 1,
+    },
+    settingsTitle: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        marginBottom: 4,
+    },
+    settingsSubtitle: {
+        fontSize: 12,
     },
 });
 

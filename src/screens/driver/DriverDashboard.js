@@ -49,18 +49,25 @@ const DriverDashboard = ({ user, onLogout, navigation }) => {
         fetchData();
     };
 
-    const StatusCard = ({ icon, title, subtitle, value, color, delay }) => (
-        <View style={[styles.card, { backgroundColor: theme.card, borderLeftColor: color }]}>
-            <View style={[styles.iconContainer, { backgroundColor: isDarkMode ? `${color}30` : `${color}15` }]}>
-                <Ionicons name={icon} size={24} color={color} />
-            </View>
-            <View style={styles.cardContent}>
-                <Text style={[styles.cardTitle, { color: theme.textSecondary }]}>{title}</Text>
-                <Text style={[styles.cardValue, { color: theme.text }]}>{value}</Text>
-                {subtitle ? <Text style={[styles.cardSubtitle, { color: color }]}>{subtitle}</Text> : null}
-            </View>
-        </View>
-    );
+    const StatusCard = ({ icon, title, subtitle, value, color, delay, onPress }) => {
+        const Container = onPress ? TouchableOpacity : View;
+        return (
+            <Container
+                style={[styles.card, { backgroundColor: theme.card, borderLeftColor: color }]}
+                onPress={onPress}
+                activeOpacity={0.7}
+            >
+                <View style={[styles.iconContainer, { backgroundColor: isDarkMode ? `${color}30` : `${color}15` }]}>
+                    <Ionicons name={icon} size={24} color={color} />
+                </View>
+                <View style={styles.cardContent}>
+                    <Text style={[styles.cardTitle, { color: theme.textSecondary }]}>{title}</Text>
+                    <Text style={[styles.cardValue, { color: theme.text }]}>{value}</Text>
+                    {subtitle ? <Text style={[styles.cardSubtitle, { color: color }]}>{subtitle}</Text> : null}
+                </View>
+            </Container>
+        );
+    };
 
     return (
         <ImageBackground
@@ -117,7 +124,8 @@ const DriverDashboard = ({ user, onLogout, navigation }) => {
                                 title="Current Trip"
                                 value={data.trip.type}
                                 subtitle={data.trip.status}
-                                color="#2ECC71"
+                                color={data.trip.status === 'Ongoing' ? "#2ECC71" : "#95A5A6"}
+                                onPress={() => navigation.navigate('Trip')}
                             />
                             <StatusCard
                                 icon="navigate-outline"
@@ -135,23 +143,6 @@ const DriverDashboard = ({ user, onLogout, navigation }) => {
                             />
                         </View>
 
-                        {/* Live Location Status */}
-                        <View style={[styles.sectionContainer]}>
-                            <Text style={[styles.sectionTitle, { color: theme.text }]}>Live Tracking</Text>
-                            <View style={[styles.detailCard, { backgroundColor: theme.card }]}>
-                                <View style={styles.locationRow}>
-                                    <View style={styles.statusBadge}>
-                                        <View style={[styles.indicator, { backgroundColor: data.location.gps ? '#2ECC71' : '#E74C3C' }]} />
-                                        <Text style={[styles.statusText, { color: theme.text }]}>
-                                            GPS {data.location.gps ? 'Active' : 'Inactive'}
-                                        </Text>
-                                    </View>
-                                    <Text style={[styles.lastUpdated, { color: theme.textSecondary }]}>
-                                        Updated: {data.location.lastUpdated}
-                                    </Text>
-                                </View>
-                            </View>
-                        </View>
 
                         {/* Student Boarding List */}
                         <View style={styles.sectionContainer}>

@@ -14,9 +14,15 @@ import AddManagementScreen from './src/screens/admin/AddManagementScreen';
 import DriverNavigator from './src/navigation/DriverNavigator';
 import DriverQRScreen from './src/screens/driver/DriverQRScreen';
 import StudentScannerScreen from './src/screens/student/StudentScannerScreen';
+import TrackBusScreen from './src/screens/student/TrackBusScreen';
 import { getUser, logout } from './src/services/auth';
 import { ThemeProvider } from './src/context/ThemeContext';
 import * as Linking from 'expo-linking';
+
+import { registerForPushNotificationsAsync } from './src/services/notifications';
+
+// Disable console.log to keep output clean, showing only errors
+// console.log = () => { };
 
 const Stack = createNativeStackNavigator();
 
@@ -43,6 +49,8 @@ export default function App() {
       const storedUser = await getUser();
       if (storedUser) {
         setUser(storedUser);
+        // Register for push notifications if user is logged in
+        registerForPushNotificationsAsync();
       }
     } catch (e) {
       console.log('Failed to load user', e);
@@ -53,6 +61,8 @@ export default function App() {
 
   const handleLoginSuccess = (userData) => {
     setUser(userData);
+    // Register for push notifications on new login
+    registerForPushNotificationsAsync();
   };
 
   const handleLogout = async () => {
@@ -104,6 +114,7 @@ export default function App() {
           <Stack.Screen name="AddManagement" component={AddManagementScreen} options={{ headerShown: true, title: 'Add Management' }} />
           <Stack.Screen name="DriverQR" component={DriverQRScreen} options={{ headerShown: true, title: 'Bus QR Code' }} />
           <Stack.Screen name="StudentScanner" component={StudentScannerScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="TrackBus" component={TrackBusScreen} options={{ headerShown: true, title: 'Track Bus' }} />
         </Stack.Navigator>
       </NavigationContainer>
     </ThemeProvider >

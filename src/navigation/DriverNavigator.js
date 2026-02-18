@@ -7,6 +7,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import DriverDashboard from '../screens/driver/DriverDashboard';
 import DriverBroadcastScreen from '../screens/driver/DriverBroadcastScreen';
+import DriverTripScreen from '../screens/driver/DriverTripScreen';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -50,6 +51,8 @@ const DriverNavigator = ({ user, onLogout }) => {
                             iconName = focused ? 'speedometer' : 'speedometer-outline';
                         } else if (route.name === 'Broadcast') {
                             iconName = focused ? 'megaphone' : 'megaphone-outline';
+                        } else if (route.name === 'Trip') {
+                            iconName = focused ? 'map' : 'map-outline';
                         }
 
                         return <Ionicons name={iconName} size={24} color={color} />;
@@ -66,6 +69,9 @@ const DriverNavigator = ({ user, onLogout }) => {
                 </Tab.Screen>
                 <Tab.Screen name="Broadcast">
                     {props => <DriverBroadcastScreen {...props} user={user} />}
+                </Tab.Screen>
+                <Tab.Screen name="Trip">
+                    {props => <DriverTripScreen {...props} user={user} />}
                 </Tab.Screen>
             </Tab.Navigator >
         </SafeAreaView >
