@@ -1,0 +1,42 @@
+{
+  "expo": {
+    "name": "EduTransit",
+    "slug": "edutransit",
+    "scheme": "edutransit",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/logo.png",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/logo.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/logo.png",
+        "backgroundColor": "#ffffff"
+      },
+      "edgeToEdgeEnabled": true,
+      "usesCleartextTraffic": true,
+      "package": "com.akhil145.edutransit",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyCwAqJ4hYLkr0iC2j3Vj39mSI9pFlP-nW8"
+        }
+      }
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "b3582b1a-222d-4f71-ab56-ad64d94008b1"
+      }
+    }
+  }
+}
